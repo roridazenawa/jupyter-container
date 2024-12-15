@@ -1,8 +1,8 @@
-# Jupyter Container
+# [Jupyter Container](https://jupytercontainer.com)
 
 Deploy Jupyter Notebooks in this simple Docker container directly to Railway.
 
-[![Deploy on Railway](https://railway.com/button.svg)](https://kirr.co/egdpam)
+[![Deploy on Railway](https://railway.com/button.svg)](https://jupytercontainer.com)
 
 Environment variables:
 
@@ -12,7 +12,7 @@ Environment variables:
 
 
 ## Jupyter Notebook Server for Railway
-The goal of this [Railway template](https://kirr.co/egdpam) is two fold:
+The goal of this [Railway template](https://jupytercontainer.com) is two fold:
 
 - Customizable Jupyter environment
 - Shell-like interactivity with Railway resources (private and public)
