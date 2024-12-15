@@ -29,6 +29,9 @@ RUN pip install --no-cache-dir --upgrade pip \
     scikit-learn \
     && jupyter notebook --generate-config
 # Create a working directory
+
+COPY ./samples /notebooks/samples
+
 WORKDIR /notebooks
 
 # Expose Jupyter port
