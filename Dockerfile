@@ -44,8 +44,6 @@ RUN printf "#!/bin/bash\n" > /opt/jupyter_runner.sh && \
 # make the bash script executable
 RUN chmod +x /opt/jupyter_runner.sh
 
-# mount volume
-VOLUME /notebooks
 
 # Start Jupyter notebook with password authentication
 CMD ["sh", "-c", "/opt/jupyter_runner.sh"] 
