@@ -11,4 +11,24 @@ Environment variables:
 - `PORT`: The port for the Jupyter notebook (defaults to 8888).
 
 
+## Jupyter Notebook Server for Railway
+The goal of this [Railway template](https://railway.app/template/JEeFjP) is two fold:
+
+- Customizable Jupyter environment
+- Shell-like interactivity with Railway resources (private and public)
+
+The official JupyterLab Railway template is great but... it's overly complex for simple Jupyter tasks. That's what this template is for.
+
+The code is open source so feel free to fork and customize as you see fit. In our case, we can use it to:
+
+- Verify private Railway resource connections -- such as calling non-internet connected APIs
+- Run various analytics with private databases
+- Use numpy, pandas, scikit-learn, and many other Data Science tools
+- Build and deploy as needed. Tear down at will.
+
+Do you have ideas? Please share them with me @justinmitchel on X or on the GitHub Repo attached to this template. 
+
+All code is available at: https://github.com/codingforentrepreneurs/jupyter-container
+
 Enjoy!
+
