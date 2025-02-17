@@ -9,7 +9,8 @@ Environment variables:
 - `JUPYTER_PASSWORD`: The password for to login to the Jupyter notebook server.
 - `JUPYTER_IP`: The IP address for the Jupyter notebook (defaults to 0.0.0.0).
 - `PORT`: The port for the Jupyter notebook (defaults to 8888).
-
+- `NOTEBOOKS_DIR`: The directory for the Jupyter notebooks (defaults to /notebooks) - we recommend you use use this same directory for volume mounting.
+- `PY_REQUIREMENTS` (optional): A comma-separated list of package names to install in the container.
 
 ## Jupyter Notebook Server for Railway
 The goal of this [Railway template](https://jupytercontainer.com) is two fold:

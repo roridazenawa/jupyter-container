@@ -3,6 +3,10 @@
 scripts:
   build:
     - docker build --build-arg JUPYTER_PASSWORD=your_secure_password -t jupyter-container .
+  build_with_httpx:
+    - docker build --build-arg JUPYTER_PASSWORD=your_secure_password --build-arg REQUIREMENTS=httpx -t jupyter-container .
+  build_with_repo:
+    - docker build --build-arg JUPYTER_PASSWORD=your_secure_password --build-arg REPO_URL=https://github.com/markusschanta/awesome-jupyter -t jupyter-container .
   run:
     - docker run --rm -p 8888:8888 -e JUPYTER_IP=0.0.0.0 -e PORT=8888 -e JUPYTER_PASSWORD=your_secure_password --name jupyter-container -v ./data:/notebooks jupyter-container
   stop:

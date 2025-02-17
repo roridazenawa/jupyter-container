@@ -1,6 +1,7 @@
 # Use a slim Python image
 FROM python:3.13-slim
 
+ARG NOTEBOOKS_DIR=/notebooks
 # Install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
@@ -28,11 +29,17 @@ RUN pip install --no-cache-dir --upgrade pip \
     seaborn \
     scikit-learn \
     && jupyter notebook --generate-config
+
+# Copy and run install_packages script for additional requirements
+COPY ./build_scripts/install_packages.sh /opt/install_packages.sh
+RUN chmod +x /opt/install_packages.sh
+ARG PY_REQUIREMENTS
+RUN /opt/install_packages.sh "${PY_REQUIREMENTS}" "${NOTEBOOKS_DIR}"
+
 # Create a working directory
+COPY ./samples "${NOTEBOOKS_DIR}/samples"
 
-COPY ./samples /notebooks/samples
-
-WORKDIR /notebooks
+WORKDIR "${NOTEBOOKS_DIR}"
 
 # Expose Jupyter port
 EXPOSE 8888
