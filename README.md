@@ -11,6 +11,9 @@ Environment variables:
 - `PORT`: The port for the Jupyter notebook (defaults to 8888).
 - `NOTEBOOKS_DIR`: The directory for the Jupyter notebooks (defaults to /notebooks) - we recommend you use use this same directory for volume mounting.
 - `PY_REQUIREMENTS` (optional): A comma-separated list of package names to install in the container.
+- `GITHUB_REPO` (optional): The URL of a GitHub repository to clone into the container.
+- `GITHUB_BRANCH` (optional): The branch of the GitHub repository to clone into the container (defaults to main).
+- `GITHUB_TOKEN` (optional): The GitHub token to use to clone the repository (defaults to an empty string).
 
 ## Jupyter Notebook Server for Railway
 The goal of this [Railway template](https://jupytercontainer.com) is two fold:

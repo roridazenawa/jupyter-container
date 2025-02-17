@@ -4,11 +4,14 @@ scripts:
   build:
     - docker build --build-arg JUPYTER_PASSWORD=your_secure_password -t jupyter-container .
   build_with_httpx:
-    - docker build --build-arg JUPYTER_PASSWORD=your_secure_password --build-arg REQUIREMENTS=httpx -t jupyter-container .
+    - docker build --build-arg JUPYTER_PASSWORD=your_secure_password --build-arg PY_REQUIREMENTS="langchain" -t jupyter-container .
   build_with_repo:
-    - docker build --build-arg JUPYTER_PASSWORD=your_secure_password --build-arg REPO_URL=https://github.com/markusschanta/awesome-jupyter -t jupyter-container .
+    - docker build --build-arg JUPYTER_PASSWORD=your_secure_password --build-arg GITHUB_REPO=https://github.com/codingforentrepreneurs/30-Days-of-Python --build-arg GITHUB_BRANCH=master -t jupyter-container .
+  shell:
+    - docker run -it jupyter-container bash
   run:
-    - docker run --rm -p 8888:8888 -e JUPYTER_IP=0.0.0.0 -e PORT=8888 -e JUPYTER_PASSWORD=your_secure_password --name jupyter-container -v ./data:/notebooks jupyter-container
+    - docker stop jupyter-container || true
+    - docker run --rm -p 8881:8881 -e JUPYTER_IP=0.0.0.0 -e PORT=8881 -e JUPYTER_PASSWORD=your_secure_password --name jupyter-container -v ./data:/notebooks/volume jupyter-container
   stop:
     - docker stop jupyter-container
   remove:

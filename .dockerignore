@@ -1,0 +1,64 @@
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+bin/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+venv/
+.env
+.venv
+env/
+ENV/
+
+# Development and IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+*.log
+
+# Documentation
+docs/
+*.md
+README*
+LICENSE*
+CHANGELOG*
+
+# Test and coverage
+.coverage
+htmlcov/
+.tox/
+.pytest_cache/
+test/
+tests/
+coverage.xml
+.hypothesis/
+
+# Docker specific
+Dockerfile*
+docker-compose*.yml
+.docker/
+.dockerignore
+
+# Project specific dependencies
+node_modules/
+bower_components/
