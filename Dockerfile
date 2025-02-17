@@ -1,7 +1,7 @@
 # Use a slim Python image
 FROM python:3.13-slim
 
-ARG NOTEBOOKS_DIR=/notebooks
+ARG NOTEBOOKS_DIR=${NOTEBOOKS_DIR:-/notebooks}
 # Install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
@@ -37,6 +37,7 @@ ARG PY_REQUIREMENTS
 RUN /opt/install_packages.sh "${PY_REQUIREMENTS}" "${NOTEBOOKS_DIR}"
 
 # Create a working directory
+RUN mkdir -p "${NOTEBOOKS_DIR}"
 COPY ./samples "${NOTEBOOKS_DIR}/samples"
 
 WORKDIR "${NOTEBOOKS_DIR}"
