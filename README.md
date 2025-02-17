@@ -32,7 +32,7 @@ The code is open source so feel free to fork and customize as you see fit. In ou
 
 Do you have ideas? Please share them with me https://x.com/justinmitchel or on the GitHub Repo attached to this template. 
 
-All code is available at: https://github.com/codingforentrepreneurs/jupyter-container
+All code is available at: https://github.com/jmitchel3/jupyter-container
 
 Enjoy!
 
