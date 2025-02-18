@@ -66,13 +66,10 @@ ARG GITHUB_TOKEN
 ARG REPO_DIR=/notebooks/repo
 ARG PY_REQUIREMENTS
 
-# Setup non-root user
-RUN groupadd -r paracord && useradd -r -g paracord paracord && \
-    mkdir -p /home/paracord && \
-    mkdir -p "${NOTEBOOKS_DIR}/samples" && \
-    chown -R paracord:paracord /home/paracord && \
-    chown -R paracord:paracord "${NOTEBOOKS_DIR}" && \
-    chown -R paracord:paracord /opt/venv
+# Remove the user setup section and related chown commands
+RUN mkdir -p "${NOTEBOOKS_DIR}/samples" && \
+    mkdir -p "${VOLUME_MOUNT_PATH}" && \
+    chmod -R 777 "${VOLUME_MOUNT_PATH}"
 
 # Pull GitHub repository if GITHUB_REPO is provided
 RUN if [ ! -z "$GITHUB_REPO" ]; then \
@@ -84,32 +81,15 @@ RUN /opt/install_packages.sh "${PY_REQUIREMENTS}" "${NOTEBOOKS_DIR}"
 
 # Copy samples
 COPY ./samples "${NOTEBOOKS_DIR}/samples"
-RUN chown -R paracord:paracord "${NOTEBOOKS_DIR}"
-
-# Ensure volume path exists and is writable
-RUN mkdir -p "${VOLUME_MOUNT_PATH}" && \
-    chown -R paracord:paracord "${VOLUME_MOUNT_PATH}" && \
-    chmod -R 777 "${VOLUME_MOUNT_PATH}"
-    
 
 WORKDIR /notebooks
 
 # Expose Jupyter port
 EXPOSE 8888
 
-# Create jupyter runner script with volume permission fix
+# Create jupyter runner script (simplified without user permissions)
 RUN printf "#!/bin/bash\n" > /opt/jupyter_runner.sh && \
-    printf "sudo chown -R paracord:paracord ${VOLUME_MOUNT_PATH}\n" >> /opt/jupyter_runner.sh && \
-    printf "sudo chmod -R 777 ${VOLUME_MOUNT_PATH}\n" >> /opt/jupyter_runner.sh && \
     printf "cd ${NOTEBOOKS_DIR} && jupyter notebook --ip=\${JUPYTER_IP:-0.0.0.0} --port=\${PORT:-8888} --no-browser --allow-root --NotebookApp.password=\$(python -c \"from jupyter_server.auth import passwd; print(passwd('\$JUPYTER_PASSWORD'))\") --NotebookApp.allow_root=True\n" >> /opt/jupyter_runner.sh && \
-    chmod +x /opt/jupyter_runner.sh && \
-    chown paracord:paracord /opt/jupyter_runner.sh
-
-# Add sudo capability for volume permission management
-RUN apt-get update && apt-get install -y sudo && \
-    echo "paracord ALL=(ALL) NOPASSWD: /usr/bin/chown -R paracord:paracord ${VOLUME_MOUNT_PATH}, /usr/bin/chmod -R 777 ${VOLUME_MOUNT_PATH}" >> /etc/sudoers && \
-    rm -rf /var/lib/apt/lists/*
-
-USER paracord
+    chmod +x /opt/jupyter_runner.sh
 
 CMD ["sh", "-c", "/opt/jupyter_runner.sh"] 
