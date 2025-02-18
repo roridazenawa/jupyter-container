@@ -41,7 +41,10 @@ RUN pip install --no-cache-dir --upgrade pip \
 FROM python:${PYTHON_VERSION}
 
 ARG NOTEBOOKS_DIR=/notebooks
+ARG VOLUME_MOUNT_PATH=/notebooks/volume
+
 ENV PATH=/opt/venv/bin:$PATH
+
 
 # Copy virtual env from builder
 COPY --from=builder /opt/venv /opt/venv
@@ -83,16 +86,29 @@ RUN /opt/install_packages.sh "${PY_REQUIREMENTS}" "${NOTEBOOKS_DIR}"
 COPY ./samples "${NOTEBOOKS_DIR}/samples"
 RUN chown -R paracord:paracord "${NOTEBOOKS_DIR}"
 
+# Ensure volume path exists and is writable
+RUN mkdir -p "${VOLUME_MOUNT_PATH}" && \
+    chown -R paracord:paracord "${VOLUME_MOUNT_PATH}" && \
+    chmod -R 755 "${VOLUME_MOUNT_PATH}"
+    
+
 WORKDIR /notebooks
 
 # Expose Jupyter port
 EXPOSE 8888
 
-# Create jupyter runner script
+# Create jupyter runner script with volume permission fix
 RUN printf "#!/bin/bash\n" > /opt/jupyter_runner.sh && \
+    printf "sudo chown -R paracord:paracord ${VOLUME_MOUNT_PATH}\n" >> /opt/jupyter_runner.sh && \
+    printf "sudo chmod -R 755 ${VOLUME_MOUNT_PATH}\n" >> /opt/jupyter_runner.sh && \
     printf "cd ${NOTEBOOKS_DIR} && jupyter notebook --ip=\${JUPYTER_IP:-0.0.0.0} --port=\${PORT:-8888} --no-browser --allow-root --NotebookApp.password=\$(python -c \"from jupyter_server.auth import passwd; print(passwd('\$JUPYTER_PASSWORD'))\") --NotebookApp.allow_root=True\n" >> /opt/jupyter_runner.sh && \
     chmod +x /opt/jupyter_runner.sh && \
     chown paracord:paracord /opt/jupyter_runner.sh
+
+# Add sudo capability for volume permission management
+RUN apt-get update && apt-get install -y sudo && \
+    echo "paracord ALL=(ALL) NOPASSWD: /usr/bin/chown -R paracord:paracord ${VOLUME_MOUNT_PATH}, /usr/bin/chmod -R 755 ${VOLUME_MOUNT_PATH}" >> /etc/sudoers && \
+    rm -rf /var/lib/apt/lists/*
 
 USER paracord
 
