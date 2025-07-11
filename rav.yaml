@@ -11,7 +11,7 @@ scripts:
     - docker run -it jupyter-container bash
   run:
     - docker stop jupyter-container || true
-    - docker run --rm -p 8881:8881 -e JUPYTER_IP=0.0.0.0 -e PORT=8881 -e JUPYTER_PASSWORD=your_secure_password --name jupyter-container -v ./data:/notebooks/volume jupyter-container
+    - docker run --rm -p 8881:8881 -e JUPYTER_IP=0.0.0.0 -e PORT=8881 -e JUPYTER_PASSWORD=cVwkxam01a --name jupyter-container -v ./data:/notebooks/volume jupyter-container
   stop:
     - docker stop jupyter-container
   remove:
